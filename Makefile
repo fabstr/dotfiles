@@ -4,16 +4,16 @@ BACKUPDIR=backups
 BACKUPTMP=dotfilesbackup
 FILES=gitconfig sbclrc tmux.conf vim vimrc zcompdump zshrc
 
-.PHONY : newinstall vimplugins install remove backup backupdir
-
 replace: backup remove newinstall
 
 newinstall: install vimplugins
 
-vimplugins: 
+vimplugins: vundle
+	vim -u vimrc.installation +PluginInstall +qall
+
+vundle:
 	mkdir -p $(DIR)/vim/bundle
-	cd $(DIR)/vim/bundle && git clone https://github.com/gmarik/Vundle.vim
-	vim -u $(DIR)/vimrc.installation +PluginInstall +qall
+	git clone https://github.com/gmarik/Vundle.vim $(DIR)/vim/bundle/Vundle.vim
 
 install: $(FILES:%=%.install) 
 
