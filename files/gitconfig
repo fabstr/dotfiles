@@ -1,0 +1,14 @@
+[user]
+	name = Fabian Ström
+	email = fs@fabianstrom.se
+[core]
+	editor = /Users/fabianstrom/bin/mvim
+[gui]
+	recentrepo = /Users/fabianstrom/Desktop/saker/uv/clojure/bar
+[color]
+	ui = false
+[push]
+	default = simple
+[filter "media"]
+	clean = git-media-clean %f
+	smudge = git-media-smudge %f

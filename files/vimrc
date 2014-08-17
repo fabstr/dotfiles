@@ -1,0 +1,116 @@
+set nocompatible
+filetype off
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" to install plugins, run
+" :PluginInstall in vim
+
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
+
+" 'my' plugins
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'scrooloose/nerdtree'
+Plugin 'vim-scripts/paredit.vim'
+Plugin 'rainbow_parentheses.vim'
+Plugin 'scrooloose/syntastic'
+Plugin 'tomtom/tlib_vim'
+Plugin 'MarcWeber/vim-addon-mw-utils'
+Plugin 'sudar/vim-arduino-syntax'
+Plugin 'guns/vim-clojure-static'
+Plugin 'garbas/vim-snipmate'
+Plugin 'honza/vim-snippets'
+Plugin 'dag/vim2hs'
+Plugin 'tomasr/molokai'
+Plugin 'vim-scripts/DrawIt'
+
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+" more colours 
+let &t_Co=256
+
+" show line numbers
+set number
+
+" automatic intendation
+set ai
+
+" 40 tabs are allowed
+set tabpagemax=40
+
+" indent c-style
+set cindent
+
+" one tab equals 8 spaces
+set tabstop=8
+
+" format status line filepath modified filetype column line hexacemal value
+" percenage of file number of lines in buffer
+set statusline=%m\ %f\ %y\ {%c;%l,\ 0x%B}\ (%p\ procent\ of\ %L\ lines)
+
+" always show statusline
+set laststatus=2
+
+" writes \item first on the row, moves 1 row down and to the beginning of that
+" line (ESC I \item ESC j 0). Bind to C-i (and tab for some reason)
+let @i = ' I\item  j0'
+noremap <C-i> @i
+
+" arduino syntax
+autocmd! BufNewFile,BufRead *.pde,*.ino setlocal ft=arduino
+
+" fixes doxygen syntax (ie javadoc for other languages)
+let g:load_doxygen_syntax=1
+
+" go
+set rtp+=/usr/local/go/misc/vim
+"filetype indent on
+
+" needed for snipMate
+filetype plugin on
+
+" syntax highlighting
+syntax on
+
+" mark column 80
+let &colorcolumn=join(range(81,999),",")
+highlight ColorColumn ctermbg=235 
+let &colorcolumn="81,".join(range(998,999),",")
+
+" open NERDTree at start time
+autocmd vimenter * NERDTree
+
+" set font, size and colour 
+set guifont=Menlo\ Regular:h11
+colorscheme molokai
+
+" for VimClojure
+let vimclojure#HighlightBuiltins=1
+let vimclojure#ParenRainbow=1
+
+" remove toolbar
+set guioptions-=T
+
+" no indentation on case:
+set cino=:0
+
+" no indentation on public/private
+set cinoptions=g-1
+
+" next/previous error
+map cn <esc>:cn<cr>
+map cp <esc>:cp<cr>
+
+" RainboxParens
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
+
+map <C-n> :NERDTreeToggle<CR>
+
+set mouse=a

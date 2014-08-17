@@ -1,0 +1,35 @@
+# Lines configured by zsh-newuser-install
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=1000
+bindkey -e
+# End of lines configured by zsh-newuser-install
+# The following lines were added by compinstall
+zstyle :compinstall filename '/home/fabian/.zshrc'
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
+
+autoload -U promptinit
+promptinit
+prompt adam1 red
+
+export LANG=sv_SE.UTF-8
+export LC_ALL=sv_SE.UTF-8
+export LC_CTYPE=sv_SE.UTF-8
+export MM_CHARSET=utf8
+export PAGER=less
+
+export PATH="$HOME/bin:${PATH}"
+export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+export PATH="/Library/Frameworks/Python.framework/Versions/2.7/bin:${PATH}"
+export PATH="/Applications/MacVim.app/Contents/Resources/vim/runtime/macros:${PATH}"
+
+export CLICOLOR=exfxcxdxbxegedabagacad
+export LSCOLORS=hefxcxdxbxegedabagacad
+
+alias tmux="tmux -2"
+alias tm="tmux attach"
+
+setopt histignorespace

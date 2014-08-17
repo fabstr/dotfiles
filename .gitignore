@@ -1,0 +1,4 @@
+files/vim/bundle/*
+backup-*.tar
+.*.swp
+files/vim/.*
