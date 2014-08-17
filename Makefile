@@ -6,14 +6,16 @@ FILES=gitconfig sbclrc tmux.conf vim vimrc zcompdump zshrc
 
 .PHONY : newinstall vimplugins install remove backup backupdir
 
-newinstall: backup install vimplugins
+replace: backup remove newinstall
+
+newinstall: install vimplugins
 
 vimplugins: 
 	mkdir -p $(DIR)/vim/bundle
 	cd $(DIR)/vim/bundle && git clone https://github.com/gmarik/Vundle.vim
-	vim +PluginInstall +qall
+	vim -u $(DIR)/vimrc.installation +PluginInstall +qall
 
-install: remove $(FILES:%=%.install) 
+install: $(FILES:%=%.install) 
 
 remove: $(FILES:%=%.remove) 
 
