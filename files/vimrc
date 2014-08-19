@@ -84,6 +84,9 @@ let &colorcolumn="81,".join(range(998,999),",")
 " open NERDTree at start time
 autocmd vimenter * NERDTree
 
+" Go to previous (last accessed) window.
+ autocmd VimEnter * wincmd p
+
 " set font, size and colour 
 set guifont=Menlo\ Regular:h11
 colorscheme molokai
