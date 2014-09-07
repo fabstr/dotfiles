@@ -4,6 +4,14 @@ BACKUPDIR=backups
 BACKUPTMP=dotfilesbackup
 FILES=gitconfig sbclrc tmux.conf vim vimrc zcompdump zshrc
 
+help:
+	@echo Help:
+	@echo "  make help"
+	@echo "  make replace: backup remove newinstall"
+	@echo "  make vimplugins: vundle"
+	@echo "  make newinstall: install vimplugins"
+	@echo "  make vimplugins: vundle"
+
 replace: backup remove newinstall
 
 newinstall: install vimplugins
