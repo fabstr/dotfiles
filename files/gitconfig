@@ -2,7 +2,7 @@
 	name = Fabian Ström
 	email = fs@fabianstrom.se
 [core]
-	editor = /Users/fabianstrom/bin/mvim
+	editor = vim
 [gui]
 	recentrepo = /Users/fabianstrom/Desktop/saker/uv/clojure/bar
 [color]
