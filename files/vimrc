@@ -89,7 +89,7 @@ autocmd VimEnter * wincmd p
 
 " set font, size and colour 
 if has("gui_gtk2")
-	set guifont=Menlo\ Regular\ 11
+	set guifont=Menlo\ Regular\ 9
 elseif has("gui_macvim")
 	set guifont=Menlo\ Regular:h11
 elseif has("gui_win32")
