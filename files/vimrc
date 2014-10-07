@@ -88,7 +88,13 @@ autocmd vimenter * NERDTree
 autocmd VimEnter * wincmd p
 
 " set font, size and colour 
-set guifont=Menlo\ Regular:h11
+if has("gui_gtk2")
+	set guifont=Menlo\ Regular\ 11
+elseif has("gui_macvim")
+	set guifont=Menlo\ Regular:h11
+elseif has("gui_win32")
+	set guifont=Menlo\ Regular:h11
+end
 colorscheme molokai
 
 " for VimClojure
