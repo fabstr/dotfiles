@@ -24,7 +24,6 @@ export PATH="/Applications/MacVim.app/Contents/Resources/vim/runtime/macros:${PA
 export CLICOLOR=exfxcxdxbxegedabagacad
 export LSCOLORS=hefxcxdxbxegedabagacad
 
-alias ls='ls --color=auto'
 alias tmux="tmux -2"
 alias tm="tmux attach"
 alias ap='ssh fabian@apple.tallr.se'
