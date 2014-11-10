@@ -139,3 +139,5 @@ function! s:CloseIfOnlyNerdTreeLeft()
 		endif
 	endif
 endfunction
+
+set foldmethod=indent
