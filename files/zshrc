@@ -27,6 +27,11 @@ export LSCOLORS=hefxcxdxbxegedabagacad
 alias tmux="tmux -2"
 alias tm="tmux attach"
 alias ap='ssh fabian@apple.tallr.se'
-alias ls='ls --color=auto'
+
+case `uname` in
+	Linux)
+		alias ls='ls --color=auto'
+	;;
+esac
 
 setopt histignorespace
