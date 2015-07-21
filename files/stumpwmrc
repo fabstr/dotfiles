@@ -1,0 +1,140 @@
+(in-package :stumpwm)
+
+;; använd svensk tangentbordslayout
+(run-shell-command "setxkbmap se")
+
+;; placera skärmarna på rätt ställen
+(run-shell-command "xrandr --output DVI-0 --left-of DVI-1")
+(run-shell-command "xrandr --output DVI-1 --mode 1920x1080")
+
+;; sätt fokus där muspekaren finns
+(setf *mouse-focus-policy* :sloppy)
+
+;; vill ha statusrad
+(setf *group-format* "%t%s")
+(setf *screen-mode-line-format* (list "[^B%h:%n (%g)^b] %W^>" 
+				 " | %d"))
+(enable-mode-line (current-screen) (current-head) t)
+
+;; ta bort default-gruppen och ersätt med en 1-grupp
+;(let ((g (add-group (current-screen) "1" :background t))
+      ;(d (find-group (current-screen) "Default")))
+  ;(kill-group d g))
+(when *initializing*
+  (grename "1")) ; rename the default
+
+;; definera logga-ut-menyn
+(defparameter *logout-menu*
+  `(("Logout? NO" ,#'(lambda ()))
+    ("Logout? yes" ,#'(lambda () (quit)))))
+
+;; definera en meny
+(defparameter *mymenu*
+  `(("Reload wm config" ,#'(lambda () (load "~/.stumpwmrc")))
+    ("Toggle statusbar" ,#'(lambda () (toggle-mode-line 
+				       (current-screen) 
+				       (current-head))))
+    ("Lock" "i3lock -c 000000")
+    ("Logout" ,#'(lambda () (pick *logout-menu*)))))
+
+;; välj något från menyn
+(defun pick (menu)
+  (let ((sel (stumpwm::select-from-menu (current-screen) menu "")))
+    (cond
+      ((null sel) nil)
+      ((functionp (second sel)) (funcall (second sel)))
+      ((stringp (second sel)) (run-shell-command (second sel)))
+      (t (pick (cdr sel))))))
+
+;; kommandon 
+(defcommand mymenu () () (pick *mymenu*))
+(defcommand statusbar () () (toggle-mode-line (current-screen) (current-head)))
+(defcommand gnome-terminal () () (run-shell-command "gnome-terminal"))
+(defcommand dmenu () () (run-shell-command "dmenu_run"))
+(defcommand lock () () (run-shell-command "i3lock -c 000000"))
+(defcommand exit () () (pick *logout-menu*))
+(defcommand reload-config () () (load "~/.stumpwmrc"))
+(defcommand firefox () () (run-shell-command "firefox"))
+(defcommand gedit () () (run-shell-command "gedit"))
+(defcommand gnome-calculator () () (run-shell-command "gnome-calculator"))
+(defcommand terminal-vsplit () () (progn (vsplit) (fnext) (gnome-terminal)))
+(defcommand terminal-hsplit () () (progn (hsplit) (fnext) (gnome-terminal)))
+
+;; skapa gruppen med namnet om den inte finns
+(defcommand gselect-or-create (name) ((:string "Select Group: "))
+  (let ((group (find-group (current-screen) name)))
+    (if group (switch-to-group group)
+      (add-group (current-screen) name))))
+
+;; skapa gruppen med namnet om den inte finns
+(defcommand gmove-or-create (name) ((:string "Select Group: "))
+  (let ((group (find-group (current-screen) name)))
+    (if (null group)
+      (setf group (add-group (current-screen) name :background t)))
+    (let ((window (current-window)))
+      (gmove group) 
+      (gselect group)
+      (when window (really-raise-window window)))))
+
+;; bindningar för tangentbordet
+(define-key *root-map* (kbd ".") "mymenu")
+(define-key *root-map* (kbd "_") "statusbar")
+(define-key *root-map* (kbd "e") "vim")
+(define-key *root-map* (kbd "f") "firefox")
+
+(set-focus-color "#6666FF")
+(set-unfocus-color "#999999")
+
+
+;; Ta bort tomma grupper när man lämnar dem
+(add-hook *focus-group-hook* #'(lambda (new old)
+				 (if (null (group-windows old))
+				   (kill-group old new))))
+
+;; ta bort ramen när ett fönster stängs
+(add-hook *destroy-window-hook* #'(lambda (window) (remove-split)))
+
+(defun define-top-keys (keys)
+  (loop for k in keys do (define-key *top-map* (kbd (first k)) (second k))))
+(define-top-keys 
+ '(("M-I" "lock")
+   ("M-SPC" "pull-hidden-next")
+   ("M-RET" "gnome-terminal")
+   ("M-h" "move-focus left")
+   ("M-l" "move-focus right")
+   ("M-j" "move-focus down")
+   ("M-k" "move-focus up")
+   ("M-H" "move-window left")
+   ("M-L" "move-window right")
+   ("M-J" "move-window down")
+   ("M-K" "move-window up")
+   ("s-l" "lock")
+   ("M-E" "exit")
+   ("M-R" "reload-config")
+   ("M-d" "dmenu")
+   ("M-Q" "delete")
+   ("M-." "mymenu")
+   ("M-f" "fullscreen")
+   ("M-1" "gselect-or-create 1")
+   ("M-2" "gselect-or-create 2")
+   ("M-3" "gselect-or-create 3")
+   ("M-4" "gselect-or-create 4")
+   ("M-5" "gselect-or-create 5")
+   ("M-6" "gselect-or-create 6")
+   ("M-7" "gselect-or-create 7")
+   ("M-8" "gselect-or-create 8")
+   ("M-9" "gselect-or-create 9")
+   ("M-0" "gselect-or-create 10")
+   ("M-!" "gmove-or-create 1")
+   ("M-\"" "gmove-or-create 2")
+   ("M-#" "gmove-or-create 3")
+   ("M-n" "gnext")
+   ("M-p" "gprev")
+   ("M-V" "vsplit")
+   ("M-H" "hsplit")
+   ("M-C" "remove")
+   ("s-f" "firefox")
+   ("s-g" "gedit")
+   ("M-C-RET" "terminal-vsplit")
+   ("M-S-RET" "terminal-hsplit")
+   ("s-c" "gnome-calculator")))
