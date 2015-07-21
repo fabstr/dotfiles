@@ -2,7 +2,7 @@ INSTALLDIR=~/dotfiles
 DIR=$(INSTALLDIR)/files
 BACKUPDIR=backups
 BACKUPTMP=dotfilesbackup
-FILES=gitconfig sbclrc tmux.conf vim vimrc zcompdump zshrc
+FILES=gitconfig sbclrc tmux.conf vim vimrc zcompdump zshrc stumpwmrc
 
 help:
 	@echo Help:
